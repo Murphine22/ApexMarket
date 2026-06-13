@@ -1,0 +1,19 @@
+{
+  "name": "apexmarket",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ApexMarket — full-stack supermarket management system (React + Express + MongoDB).",
+  "scripts": {
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "dev": "concurrently -n client,server -c green,blue \"npm run client\" \"npm run server\"",
+    "install:all": "npm --prefix client install && npm --prefix server install",
+    "seed": "npm --prefix server run seed",
+    "test": "npm --prefix server test",
+    "lint": "npm --prefix client run lint && npm --prefix server run lint",
+    "build": "npm --prefix client run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
