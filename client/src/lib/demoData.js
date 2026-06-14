@@ -1,7 +1,7 @@
 // Seed data used when the app runs in standalone "demo mode" (no backend required).
 // This lets http://localhost:3000 be fully interactive out of the box.
 
-import { buildExtraProducts } from './catalog';
+import { buildExtraProducts, toNaira } from './catalog';
 
 export const CATEGORIES = [
   'Produce',
@@ -33,9 +33,16 @@ const CURATED_PRODUCTS = [
   { sku: 'PRD-1012', name: 'Dark Chocolate', category: 'Snacks', price: 3.49, cost: 1.5, stock: 40, lowStockThreshold: 15, image: img('photo-1548907040-4baa42d10919') },
 ];
 
+// Prices/costs above are authored in USD; convert curated items to Naira so the
+// whole catalog is consistently priced in ₦.
+const toNairaProduct = (p) => ({ ...p, price: toNaira(p.price), cost: toNaira(p.cost) });
+
 // Catalog generator — produces a large, realistic supermarket inventory so the
 // store feels fully stocked. Used by both the frontend demo and backend seed.
-export const DEMO_PRODUCTS = [...CURATED_PRODUCTS, ...buildExtraProducts(100)];
+export const DEMO_PRODUCTS = [
+  ...CURATED_PRODUCTS.map(toNairaProduct),
+  ...buildExtraProducts(100),
+];
 
 export const DEMO_USERS = [
   { id: 'u-admin', name: 'Ada Admin', email: 'admin@apexmarket.io', role: 'admin', password: 'admin123' },

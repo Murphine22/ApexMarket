@@ -17,4 +17,7 @@ const inventoryLogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+inventoryLogSchema.set('toJSON', { virtuals: true });
+inventoryLogSchema.set('toObject', { virtuals: true });
+
 module.exports = mongoose.model('InventoryLog', inventoryLogSchema);

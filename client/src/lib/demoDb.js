@@ -177,4 +177,38 @@ export const demoApi = {
     await delay(120);
     return [...db.logs];
   },
+
+  async recordMovement({ productId, sku, movementType, quantity, note }) {
+    await delay();
+    const product = db.products.find((p) => p._id === productId || p.sku === sku);
+    if (!product) {
+      const err = new Error('Product not found');
+      err.status = 404;
+      throw err;
+    }
+    const delta = movementType === 'wastage' ? -Math.abs(quantity) : Number(quantity);
+    if (product.stock + delta < 0) {
+      const err = new Error('Movement would drive stock below zero');
+      err.status = 400;
+      throw err;
+    }
+    product.stock += delta;
+    const log = {
+      id: uid('LOG'),
+      sku: product.sku,
+      name: product.name,
+      movementType,
+      quantity: delta,
+      note: note || '',
+      createdAt: new Date().toISOString(),
+    };
+    db.logs.unshift(log);
+    save(db);
+    return log;
+  },
+
+  async getLowStock() {
+    await delay(120);
+    return db.products.filter((p) => p.stock <= (p.lowStockThreshold ?? 10));
+  },
 };

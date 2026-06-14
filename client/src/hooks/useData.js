@@ -57,3 +57,14 @@ export function useCreateTransaction() {
     },
   });
 }
+
+export function useRecordMovement() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload) => dataService.recordMovement(payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: keys.products });
+      qc.invalidateQueries({ queryKey: keys.logs });
+    },
+  });
+}

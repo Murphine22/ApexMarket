@@ -234,11 +234,11 @@ export default function Products() {
               </select>
             </div>
             <div>
-              <label className="label">Price ($)</label>
+              <label className="label">Price (₦)</label>
               <input name="price" type="number" step="0.01" min="0" required value={form.price} onChange={onChange} className="input" />
             </div>
             <div>
-              <label className="label">Cost ($)</label>
+              <label className="label">Cost (₦)</label>
               <input name="cost" type="number" step="0.01" min="0" value={form.cost} onChange={onChange} className="input" />
             </div>
             <div>

@@ -1,15 +1,29 @@
 // Deterministic catalog generator (CommonJS) for seeding a large inventory.
 // Mirrors client/src/lib/catalog.js so demo and seeded data stay consistent.
 
-const CATEGORY_IMAGE = {
-  Produce: 'photo-1542838132-92c53300491e',
-  Dairy: 'photo-1628088062854-d1870b4553da',
-  Bakery: 'photo-1509440159596-0249088772ff',
-  Beverages: 'photo-1437418747212-8d9709afab22',
-  Snacks: 'photo-1599490659213-e2b9527bd087',
-  Household: 'photo-1583947215259-38e31be8751f',
-  Frozen: 'photo-1561758033-d89a9ad46330',
-  'Personal Care': 'photo-1556228578-8c89e6adf883',
+// Fallback keyword per category for image search when a product name yields none.
+const CATEGORY_KEYWORD = {
+  Produce: 'vegetable',
+  Dairy: 'dairy',
+  Bakery: 'bakery',
+  Beverages: 'beverage',
+  Snacks: 'snack',
+  Household: 'household',
+  Frozen: 'frozen',
+  'Personal Care': 'cosmetic',
+};
+
+// Convert a USD base price into a realistic Naira amount (rounded to ₦50).
+const toNaira = (usd) => Math.round((usd * 1500) / 50) * 50;
+
+// Derive a relevant image search keyword from a product name (last noun word).
+const keywordOf = (name, category) => {
+  const cleaned = name
+    .split('—')[0]
+    .toLowerCase()
+    .replace(/\([^)]*\)|\d+|lb|ml|oz|ct|pk|gal/g, ' ');
+  const words = cleaned.match(/[a-z]{3,}/g) || [];
+  return words[words.length - 1] || CATEGORY_KEYWORD[category] || 'food';
 };
 
 const ITEMS = {
@@ -67,7 +81,8 @@ function pseudo(n) {
   return x - Math.floor(x);
 }
 
-const img = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=400&q=60`;
+// A unique lock per product guarantees a distinct (but stable) image each time.
+const img = (keyword, lock) => `https://loremflickr.com/400/400/${keyword}?lock=${lock}`;
 
 function buildExtraProducts(count = 100) {
   const base = [];
@@ -86,7 +101,7 @@ function buildExtraProducts(count = 100) {
   return pool.slice(0, count).map((p, i) => {
     const r = pseudo(i + 1);
     const r2 = pseudo(i + 50);
-    const price = Math.round(p.price * 100) / 100;
+    const price = toNaira(p.price);
     const lowStockThreshold = 8 + Math.floor(r2 * 12);
     const stock = r < 0.18 ? Math.floor(r2 * lowStockThreshold) : 20 + Math.floor(r * 90);
     return {
@@ -94,12 +109,12 @@ function buildExtraProducts(count = 100) {
       name: p.name,
       category: p.category,
       price,
-      cost: Math.round(price * 0.55 * 100) / 100,
+      cost: Math.round((price * 0.55) / 10) * 10,
       stock,
       lowStockThreshold,
-      image: img(CATEGORY_IMAGE[p.category]),
+      image: img(keywordOf(p.name, p.category), 2001 + i),
     };
   });
 }
 
-module.exports = { buildExtraProducts };
+module.exports = { buildExtraProducts, toNaira };

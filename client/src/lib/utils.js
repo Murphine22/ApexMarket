@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 export const cn = (...args) => clsx(...args);
 
 export const currency = (n) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+  new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(
     Number(n) || 0
   );
 
