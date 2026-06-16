@@ -5,6 +5,17 @@ import react from '@vitejs/plugin-react';
 // The /api proxy forwards to the Express backend when VITE_USE_API is enabled.
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          charts: ['recharts'],
+          motion: ['framer-motion'],
+        },
+      },
+    },
+  },
   server: {
     host: true,
     port: 3000,

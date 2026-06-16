@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { Plus, Search, Pencil, Trash2, Package, AlertTriangle, Filter } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2, Package, AlertTriangle, Filter, Download } from 'lucide-react';
 import { Page, stagger, fadeUp } from '../components/Motion';
 import PageHeader from '../components/PageHeader';
 import Modal from '../components/Modal';
@@ -14,11 +14,13 @@ import {
 } from '../hooks/useData';
 import { useAuthStore } from '../store/useAuthStore';
 import { CATEGORIES } from '../lib/demoData';
-import { currency, cn, isLowStock, isOutOfStock, haptic } from '../lib/utils';
+import { currency, cn, isLowStock, isOutOfStock, haptic, exportToCsv } from '../lib/utils';
+import usePageTitle from '../hooks/usePageTitle';
 
 const blank = { sku: '', name: '', category: CATEGORIES[0], price: '', cost: '', stock: '', lowStockThreshold: 10, image: '' };
 
 export default function Products() {
+  usePageTitle('Products');
   const user = useAuthStore((s) => s.user);
   const canManage = user?.role === 'admin';
   const { data: products = [], isLoading } = useProducts();
@@ -90,11 +92,28 @@ export default function Products() {
     }
   };
 
+  const exportCsv = () => {
+    const rows = filtered.map((p) => ({
+      SKU: p.sku,
+      Name: p.name,
+      Category: p.category,
+      Price: p.price,
+      Cost: p.cost,
+      Stock: p.stock,
+      LowStockThreshold: p.lowStockThreshold ?? 10,
+    }));
+    exportToCsv(`apexmarket-products-${new Date().toISOString().slice(0, 10)}.csv`, rows);
+    toast.success(`Exported ${rows.length} products`);
+  };
+
   if (isLoading) return <Loading label="Loading products…" />;
 
   return (
     <Page>
       <PageHeader title="Products" subtitle={`${products.length} items in catalog`}>
+        <button className="btn-ghost" onClick={exportCsv} disabled={!filtered.length}>
+          <Download size={16} /> Export CSV
+        </button>
         {canManage && (
           <button className="btn-primary" onClick={openCreate}>
             <Plus size={16} /> Add product

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LogOut, Eye, EyeOff, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { LogOut, Eye, EyeOff, Volume2, VolumeX, Sparkles, Sun, Moon, Command } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useUiStore } from '../store/useUiStore';
 import { dataService } from '../lib/dataService';
@@ -10,7 +10,12 @@ export default function Topbar() {
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
   const user = useAuthStore((s) => s.user);
-  const { focusMode, toggleFocusMode, soundEnabled, toggleSound } = useUiStore();
+  const { focusMode, toggleFocusMode, soundEnabled, toggleSound, theme, toggleTheme } = useUiStore();
+
+  const openPalette = () =>
+    window.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'k', ctrlKey: true })
+    );
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between gap-4 px-4 lg:px-8 py-4 glass-strong border-x-0 border-t-0">
@@ -39,6 +44,24 @@ export default function Topbar() {
       </div>
 
       <div className="flex items-center gap-2">
+        <button
+          className="btn-ghost hidden md:inline-flex px-3 text-slate-400"
+          onClick={openPalette}
+          title="Open command palette (Ctrl+K)"
+        >
+          <Command size={14} />
+          <span className="text-xs">Ctrl K</span>
+        </button>
+        <button
+          className="btn-ghost px-2.5"
+          onClick={() => {
+            haptic();
+            toggleTheme();
+          }}
+          title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        >
+          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
         <button
           className="btn-ghost px-2.5"
           onClick={() => {

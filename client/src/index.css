@@ -22,6 +22,59 @@ body {
   background-attachment: fixed;
 }
 
+/* ---------------------------------------------------------------------------
+   Light theme. The UI is built dark-first with translucent-white glass
+   surfaces; under `.light` we remap the core surface + text utilities to a
+   dark-on-light palette so the whole app flips without touching every file.
+   --------------------------------------------------------------------------- */
+html.light {
+  color-scheme: light;
+}
+html.light body {
+  @apply bg-slate-100 text-slate-800;
+  background-image:
+    radial-gradient(60rem 60rem at 110% -10%, rgba(16, 185, 129, 0.1), transparent 60%),
+    radial-gradient(50rem 50rem at -10% 110%, rgba(14, 165, 233, 0.1), transparent 55%);
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.25);
+}
+
+/* Surfaces */
+.light .glass {
+  @apply bg-white/70 border-slate-900/10;
+  box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.08);
+}
+.light .glass-strong {
+  @apply bg-white/80 border-slate-900/10;
+}
+.light .btn-ghost {
+  @apply bg-slate-900/[0.04] text-slate-700 border-slate-900/10 hover:bg-slate-900/10;
+}
+.light .input {
+  @apply bg-white border-slate-900/15 text-slate-800 placeholder:text-slate-400;
+}
+
+/* Text remaps (higher specificity than the raw Tailwind utilities) */
+.light .text-slate-100 { color: #0f172a; }
+.light .text-slate-200 { color: #1e293b; }
+.light .text-slate-300 { color: #334155; }
+.light .text-slate-400 { color: #475569; }
+.light .text-slate-500 { color: #64748b; }
+.light .text-slate-600 { color: #94a3b8; }
+.light .text-white { color: #0f172a; }
+
+/* Translucent-white fills become subtle dark fills on light surfaces */
+.light .bg-white\/5 { background-color: rgba(15, 23, 42, 0.04); }
+.light .bg-white\/10 { background-color: rgba(15, 23, 42, 0.07); }
+.light .bg-white\/\[0\.07\] { background-color: rgba(15, 23, 42, 0.05); }
+.light .border-white\/10 { border-color: rgba(15, 23, 42, 0.1); }
+.light .border-white\/5 { border-color: rgba(15, 23, 42, 0.06); }
+.light .divide-white\/5 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(15, 23, 42, 0.08); }
+.light .bg-navy-900\/60 { background-color: #ffffff; }
+.light .bg-navy-900 { background-color: #f8fafc; }
+.light .bg-navy-950\/60 { background-color: rgba(15, 23, 42, 0.25); }
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

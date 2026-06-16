@@ -18,10 +18,22 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (error) => {
+    const status = error?.response?.status;
+    const url = error?.config?.url || '';
+    const isAuthCall = url.includes('/auth/login') || url.includes('/auth/register');
+
+    // A stale/expired token should not leave the user on a zeroed-out screen —
+    // clear the session and bounce to login so they can re-authenticate.
+    if (status === 401 && !isAuthCall && typeof window !== 'undefined') {
+      localStorage.removeItem('apexmarket_token');
+      localStorage.removeItem('apexmarket_auth');
+      if (!window.location.pathname.startsWith('/login')) {
+        window.location.assign('/login');
+      }
+    }
+
     const message =
       error?.response?.data?.message || error?.message || 'Request failed';
-    return Promise.reject(Object.assign(new Error(message), {
-      status: error?.response?.status,
-    }));
+    return Promise.reject(Object.assign(new Error(message), { status }));
   }
 );
