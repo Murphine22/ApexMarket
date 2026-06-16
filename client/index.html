@@ -3,15 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0B1220" />
+    <meta name="color-scheme" content="dark light" />
     <meta
       name="description"
-      content="ApexMarket — a production-ready Supermarket Management System with an immersive, psychology-driven interface."
+      content="ApexMarket — a production-ready Supermarket Management System with real-time inventory, POS, role-based access, and an immersive psychology-driven interface."
     />
+    <meta name="keywords" content="supermarket, POS, inventory management, retail, ApexMarket, point of sale, stock management" />
+    <meta name="author" content="ApexMarket" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ApexMarket — Supermarket Management System" />
+    <meta property="og:description" content="Real-time inventory, atomic POS, role-based access, and an immersive psychology-driven retail interface." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:site_name" content="ApexMarket" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ApexMarket — Supermarket Management System" />
+    <meta name="twitter:description" content="Real-time inventory, atomic POS, role-based access, and an immersive retail interface." />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ApexMarket",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "A production-ready Supermarket Management System with real-time inventory, POS, role-based access, and a psychology-driven interface.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "NGN" },
+      "featureList": ["Point of Sale", "Inventory Management", "Financial Reports", "Role-Based Access Control", "Real-time Dashboard"]
+    }
+    </script>
+
+    <link rel="manifest" href="/manifest.json" />
     <title>ApexMarket — Supermarket Management System</title>
   </head>
   <body>
+    <noscript>
+      <div style="padding:2rem;text-align:center;font-family:sans-serif">
+        <h1>ApexMarket</h1>
+        <p>Please enable JavaScript to use the ApexMarket Supermarket Management System.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

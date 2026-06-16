@@ -8,8 +8,10 @@ import { useAuthStore } from '../store/useAuthStore';
 import { dataService } from '../lib/dataService';
 import { playChime } from '../lib/utils';
 import { useUiStore } from '../store/useUiStore';
+import usePageTitle from '../hooks/usePageTitle';
 
 export default function Login() {
+  usePageTitle('Sign in');
   const navigate = useNavigate();
   const { login, register, loading } = useAuthStore();
   const soundEnabled = useUiStore((s) => s.soundEnabled);

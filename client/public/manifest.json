@@ -1,0 +1,16 @@
+{
+  "name": "ApexMarket — Supermarket Management System",
+  "short_name": "ApexMarket",
+  "description": "Production-ready retail management with real-time inventory, POS, and analytics.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#0B1220",
+  "theme_color": "#10b981",
+  "orientation": "any",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "categories": ["business", "productivity"]
+}

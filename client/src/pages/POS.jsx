@@ -21,6 +21,7 @@ import { useCartStore } from '../store/useCartStore';
 import { useAuthStore } from '../store/useAuthStore';
 import { useUiStore } from '../store/useUiStore';
 import { currency, cn, isOutOfStock, playChime, haptic } from '../lib/utils';
+import usePageTitle from '../hooks/usePageTitle';
 
 const PAYMENTS = [
   { id: 'card', label: 'Card', icon: CreditCard },
@@ -29,6 +30,7 @@ const PAYMENTS = [
 ];
 
 export default function POS() {
+  usePageTitle('Point of Sale');
   const { data: products = [], isLoading } = useProducts();
   const createTransaction = useCreateTransaction();
   const user = useAuthStore((s) => s.user);

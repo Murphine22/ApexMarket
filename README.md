@@ -14,6 +14,9 @@ The frontend runs **standalone in "demo mode"** — open `http://localhost:3000`
 - **Psychologically engineered UI** — glassmorphism, Framer Motion pattern interruptions, pulsating low-stock alerts, liquid-morphing modals, dopamine-driven checkout celebration (confetti + chime + haptics), and a focus mode for cognitive narrowing.
 - **Tested** — Jest + Supertest integration tests run against an in-memory MongoDB.
 - **Documented** — interactive Swagger UI at `/api/docs`.
+- **SEO-ready** — descriptive meta tags, Open Graph + Twitter cards, JSON-LD structured data, per-page `<title>`s, `robots.txt`, and `sitemap.xml`.
+- **PWA** — installable with a web app manifest and an offline service worker (registered in production builds).
+- **Modern UX** — light/dark theme toggle, a `Ctrl/⌘+K` command palette for quick navigation, CSV export on Products and Reports, route-level code splitting, and a 401 interceptor that recovers gracefully from expired sessions.
 
 ## Tech Stack
 

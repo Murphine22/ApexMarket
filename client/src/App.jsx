@@ -1,14 +1,21 @@
+import { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useAuthStore } from './store/useAuthStore';
+import useTheme from './hooks/useTheme';
+import CommandPalette from './components/CommandPalette';
 import Layout from './components/Layout';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Products from './pages/Products';
-import POS from './pages/POS';
-import Inventory from './pages/Inventory';
-import Reports from './pages/Reports';
-import Settings from './pages/Settings';
+import { Loading } from './components/States';
+
+// Route-level code splitting keeps the initial bundle lean (heavy chart pages
+// like Dashboard/Reports load on demand).
+const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Products = lazy(() => import('./pages/Products'));
+const POS = lazy(() => import('./pages/POS'));
+const Inventory = lazy(() => import('./pages/Inventory'));
+const Reports = lazy(() => import('./pages/Reports'));
+const Settings = lazy(() => import('./pages/Settings'));
 
 function RequireAuth({ children }) {
   const user = useAuthStore((s) => s.user);
@@ -26,9 +33,13 @@ function RequireAdmin({ children }) {
 export default function App() {
   const location = useLocation();
   const user = useAuthStore((s) => s.user);
+  useTheme();
 
   return (
-    <AnimatePresence mode="wait">
+    <>
+      {user && <CommandPalette />}
+      <AnimatePresence mode="wait">
+      <Suspense fallback={<Loading label="Loading…" />}>
       <Routes location={location} key={location.pathname}>
         <Route
           path="/login"
@@ -57,6 +68,8 @@ export default function App() {
         </Route>
         <Route path="*" element={<Navigate to={user ? '/dashboard' : '/login'} replace />} />
       </Routes>
-    </AnimatePresence>
+      </Suspense>
+      </AnimatePresence>
+    </>
   );
 }
