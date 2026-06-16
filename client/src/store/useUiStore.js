@@ -12,12 +12,16 @@ export const useUiStore = create(
       // Respect reduced-motion preference for accessibility.
       reduceMotion: false,
       sidebarOpen: true,
+      // Visual theme: 'dark' (default) or 'light'.
+      theme: 'dark',
 
       toggleFocusMode: () => set((s) => ({ focusMode: !s.focusMode })),
       setFocusMode: (v) => set({ focusMode: v }),
       toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled })),
       toggleReduceMotion: () => set((s) => ({ reduceMotion: !s.reduceMotion })),
       toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
+      toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
+      setTheme: (v) => set({ theme: v }),
     }),
     { name: 'apexmarket_ui' }
   )

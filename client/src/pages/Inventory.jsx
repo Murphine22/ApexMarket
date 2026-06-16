@@ -18,6 +18,7 @@ import { useLogs, useProducts, useRecordMovement } from '../hooks/useData';
 import { useUiStore } from '../store/useUiStore';
 import { useAuthStore } from '../store/useAuthStore';
 import { formatDateTime, cn, haptic } from '../lib/utils';
+import usePageTitle from '../hooks/usePageTitle';
 
 const TYPE_META = {
   restock: { icon: ArrowUpCircle, color: 'text-safe-400', bg: 'bg-safe-500/15', label: 'Restock' },
@@ -29,6 +30,7 @@ const TYPE_META = {
 const blankMovement = { productId: '', movementType: 'restock', quantity: 1, note: '' };
 
 export default function Inventory() {
+  usePageTitle('Inventory');
   const { data: logs = [], isLoading } = useLogs();
   const { data: products = [] } = useProducts();
   const recordMovement = useRecordMovement();

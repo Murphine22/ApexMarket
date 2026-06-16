@@ -23,10 +23,12 @@ import { Loading } from '../components/States';
 import { useProducts, useTransactions } from '../hooks/useData';
 import { useAuthStore } from '../store/useAuthStore';
 import { currency, formatNumber, isLowStock } from '../lib/utils';
+import usePageTitle from '../hooks/usePageTitle';
 
 const PIE_COLORS = ['#10b981', '#0ea5e9', '#f59e0b', '#a78bfa', '#f43f5e', '#34d399', '#38bdf8', '#fbbf24'];
 
 export default function Dashboard() {
+  usePageTitle('Dashboard');
   const user = useAuthStore((s) => s.user);
   const { data: products = [], isLoading: pL } = useProducts();
   const { data: transactions = [], isLoading: tL } = useTransactions();

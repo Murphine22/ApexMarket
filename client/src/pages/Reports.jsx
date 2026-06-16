@@ -10,15 +10,18 @@ import {
   BarChart,
   Bar,
 } from 'recharts';
-import { DollarSign, TrendingUp, Percent, Boxes } from 'lucide-react';
+import { DollarSign, TrendingUp, Percent, Boxes, Download } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { Page } from '../components/Motion';
 import PageHeader from '../components/PageHeader';
 import StatCard from '../components/StatCard';
 import { Loading } from '../components/States';
 import { useProducts, useTransactions } from '../hooks/useData';
-import { currency, formatDateTime } from '../lib/utils';
+import { currency, formatDateTime, exportToCsv } from '../lib/utils';
+import usePageTitle from '../hooks/usePageTitle';
 
 export default function Reports() {
+  usePageTitle('Reports');
   const { data: products = [], isLoading: pL } = useProducts();
   const { data: transactions = [], isLoading: tL } = useTransactions();
 
@@ -58,11 +61,27 @@ export default function Reports() {
     return { revenue, orders, avgOrder, margin, inventoryValue, trend, methods };
   }, [products, transactions]);
 
+  const exportCsv = () => {
+    const rows = transactions.map((t) => ({
+      Date: formatDateTime(t.createdAt),
+      Cashier: t.cashier || '',
+      Items: t.items.reduce((s, it) => s + it.quantity, 0),
+      PaymentMethod: t.paymentMethod,
+      Total: t.total,
+    }));
+    exportToCsv(`apexmarket-transactions-${new Date().toISOString().slice(0, 10)}.csv`, rows);
+    toast.success(`Exported ${rows.length} transactions`);
+  };
+
   if (pL || tL) return <Loading label="Compiling reports…" />;
 
   return (
     <Page>
-      <PageHeader title="Financial Reports" subtitle="Admin-only insights into revenue, margin, and inventory." />
+      <PageHeader title="Financial Reports" subtitle="Admin-only insights into revenue, margin, and inventory.">
+        <button className="btn-ghost" onClick={exportCsv} disabled={!transactions.length}>
+          <Download size={16} /> Export CSV
+        </button>
+      </PageHeader>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={DollarSign} label="Total revenue" value={currency(report.revenue)} accent="safe" />

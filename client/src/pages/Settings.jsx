@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { Volume2, Eye, Activity, Database, RotateCcw, ShieldCheck } from 'lucide-react';
+import { Volume2, Eye, Activity, Database, RotateCcw, ShieldCheck, Sun } from 'lucide-react';
 import { Page } from '../components/Motion';
 import PageHeader from '../components/PageHeader';
 import { useUiStore } from '../store/useUiStore';
@@ -9,6 +9,7 @@ import { dataService } from '../lib/dataService';
 import { resetDemoDb } from '../lib/demoDb';
 import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '../lib/utils';
+import usePageTitle from '../hooks/usePageTitle';
 
 function Toggle({ checked, onChange }) {
   return (
@@ -46,6 +47,7 @@ function Row({ icon: Icon, title, desc, children }) {
 }
 
 export default function Settings() {
+  usePageTitle('Settings');
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
   const {
@@ -55,6 +57,8 @@ export default function Settings() {
     toggleFocusMode,
     reduceMotion,
     toggleReduceMotion,
+    theme,
+    toggleTheme,
   } = useUiStore();
 
   const resetDemo = () => {
@@ -70,6 +74,9 @@ export default function Settings() {
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="card divide-y divide-white/5 p-5">
           <h3 className="pb-3 font-semibold">Experience</h3>
+          <Row icon={Sun} title="Light theme" desc="Switch between the dark and light appearance.">
+            <Toggle checked={theme === 'light'} onChange={toggleTheme} />
+          </Row>
           <Row icon={Volume2} title="Sound cues" desc="Harmonic chime on high-value actions.">
             <Toggle checked={soundEnabled} onChange={toggleSound} />
           </Row>
